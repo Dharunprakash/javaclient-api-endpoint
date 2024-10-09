@@ -12,5 +12,4 @@ public class HttpResponseData {
     private int statusCode;
     private Map<String, List<String>> headers;
     private String body;
-
 }

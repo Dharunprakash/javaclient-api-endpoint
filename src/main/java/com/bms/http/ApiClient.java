@@ -18,7 +18,7 @@ public class ApiClient {
         this.httpRequestBuilder = new HttpRequestBuilder(baseUrl);
     }
 
-    // Generic GET request
+
     public HttpResponseData sendGetRequest(String path, Map<String, String> headers) throws ApiException {
         try {
             HttpRequest request = httpRequestBuilder.buildRequest(path, "GET", null, headers);
@@ -29,7 +29,7 @@ public class ApiClient {
         }
     }
 
-    // Generic POST request
+
     public HttpResponseData sendPostRequest(String path, String jsonBody, Map<String, String> headers) throws ApiException {
         try {
             HttpRequest request = httpRequestBuilder.buildRequest(path, "POST", jsonBody, headers);
@@ -40,7 +40,7 @@ public class ApiClient {
         }
     }
 
-    // Generic PUT request
+
     public HttpResponseData sendPutRequest(String path, String jsonBody, Map<String, String> headers) throws ApiException {
         try {
             HttpRequest request = httpRequestBuilder.buildRequest(path, "PUT", jsonBody, headers);
@@ -51,7 +51,7 @@ public class ApiClient {
         }
     }
 
-    // Generic DELETE request
+
     public HttpResponseData sendDeleteRequest(String path, Map<String, String> headers) throws ApiException {
         try {
             HttpRequest request = httpRequestBuilder.buildRequest(path, "DELETE", null, headers);
@@ -62,7 +62,7 @@ public class ApiClient {
         }
     }
 
-    // Handle HTTP response
+
     private HttpResponseData handleResponse(HttpResponse<String> response) throws ApiException {
         if (response.statusCode() >= 200 && response.statusCode() < 300) {
             return new HttpResponseData(response.statusCode(), response.headers().map(), response.body());

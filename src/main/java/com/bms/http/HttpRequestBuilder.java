@@ -15,7 +15,8 @@ public class HttpRequestBuilder {
 
     public HttpRequest buildRequest(String path, String method, String jsonBody, Map<String, String> headers) {
         HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl + path));
+                .uri(URI.create(baseUrl + path)).header("Content-Type", "application/json").header("Accept", "application/json");
+
 
         switch (method.toUpperCase()) {
             case "GET":

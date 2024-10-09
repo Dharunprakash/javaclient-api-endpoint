@@ -1,39 +1,45 @@
 package com.bms.utils;
 
+import com.bms.exception.ApiException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.Map;
-
 public class JsonParser {
-
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-
-
-    public static <T> T parseJson(BufferedReader reader, Class<T> clazz) throws IOException {
-        StringBuilder json = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            json.append(line);
+    public static <T> T parse(String json, Class<T> clazz) throws ApiException {
+        try {
+            return objectMapper.readValue(json, clazz);
+        } catch (JsonProcessingException e) {
+            throw new ApiException("Failed to parse JSON", 0, json);
         }
-        return parse(json.toString(), clazz);
     }
 
-
-    public static <T> T parse(Map<String, Object> data, Class<T> clazz) {
-        return objectMapper.convertValue(data, clazz);
+    public static <T> T parse(String json, TypeReference<T> typeReference) throws ApiException {
+        try {
+            return objectMapper.readValue(json, typeReference);
+        } catch (JsonProcessingException e) {
+            throw new ApiException("Failed to parse JSON", 0, json);
+        }
     }
 
-
-    public static <T> T parse(String json, Class<T> clazz) throws IOException {
-        return objectMapper.readValue(json, clazz);
+    public static String toJson(Object object) throws ApiException {
+        try {
+            return objectMapper.writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new ApiException("Failed to convert object to JSON", 0, null);
+        }
     }
 
-    public static String toJson(Object obj) throws IOException {
-        return objectMapper.writeValueAsString(obj);
+    public static JsonNode readTree(String json) throws ApiException {
+        try {
+            System.out.println(json);
+            return objectMapper.readTree(json.trim());
+
+        } catch (JsonProcessingException e) {
+            throw new ApiException("Failed to read JSON tree", 0, json);
+        }
     }
 }
