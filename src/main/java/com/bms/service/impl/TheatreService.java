@@ -6,9 +6,9 @@ import com.bms.http.ApiClient;
 import com.bms.http.HttpResponseData;
 import com.bms.model.Theatre;
 import com.bms.utils.JsonParser;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TheatreService {
@@ -24,8 +24,11 @@ public class TheatreService {
         JsonNode rootNode = JsonParser.readTree(response.getBody());
         JsonNode dataNode = rootNode.get("data");
 
-        // Using TypeReference to correctly parse List<TheatreDTO> from dataNode
-        return JsonParser.parse(dataNode.toString(), new TypeReference<List<TheatreDTO>>() {});
+       List<TheatreDTO> theatre = new ArrayList<>();;
+        for (JsonNode node : dataNode) {
+            theatre.add(JsonParser.parse(node.toString(), TheatreDTO.class));
+        }
+        return theatre;
     }
 
     public Theatre getTheatreById(Long id) throws ApiException {
@@ -64,7 +67,10 @@ public class TheatreService {
         HttpResponseData response = apiClient.sendGetRequest(path, null);
         JsonNode rootNode = JsonParser.readTree(response.getBody());
         JsonNode dataNode = rootNode.get("data");
-
-        return JsonParser.parse(dataNode.toString(), new TypeReference<List<TheatreDTO>>() {});
+        List<TheatreDTO> theatre = new ArrayList<>();
+        for (JsonNode node : dataNode) {
+            theatre.add(JsonParser.parse(node.toString(), TheatreDTO.class));
+        }
+        return theatre;
     }
 }

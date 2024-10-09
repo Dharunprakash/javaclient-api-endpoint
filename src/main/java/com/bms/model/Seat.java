@@ -1,20 +1,19 @@
-package com.bms.dto;
+package com.bms.model;
 
-import com.bms.model.Theatre;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TheatreDTO {
-
+public class Seat {
     private Long id;
-    private String name;
-    private String location;
-    private String address;
-
+    private Long screenId;
+    private Integer seatNumber;
+    private List<Booking> bookings;
 }

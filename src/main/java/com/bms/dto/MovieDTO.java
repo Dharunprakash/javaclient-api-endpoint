@@ -1,18 +1,15 @@
-package com.bms.model;
-
-
+package com.bms.dto;
+import com.bms.model.Movie;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Builder
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Movie {
+@NoArgsConstructor
+public class MovieDTO{
     private Long id;
     private String name;
     private String language;
@@ -20,6 +17,6 @@ public class Movie {
     private String duration;
     private String releaseDate;
     private Float rating;
-    private List<Showtime> showtimes;
-}
 
+
+}

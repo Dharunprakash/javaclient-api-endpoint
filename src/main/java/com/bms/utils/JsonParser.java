@@ -11,6 +11,7 @@ public class JsonParser {
 
     public static <T> T parse(String json, Class<T> clazz) throws ApiException {
         try {
+
             return objectMapper.readValue(json, clazz);
         } catch (JsonProcessingException e) {
             throw new ApiException("Failed to parse JSON", 0, json);
@@ -36,7 +37,7 @@ public class JsonParser {
     public static JsonNode readTree(String json) throws ApiException {
         try {
             System.out.println(json);
-            return objectMapper.readTree(json.trim());
+            return objectMapper.readTree(json);
 
         } catch (JsonProcessingException e) {
             throw new ApiException("Failed to read JSON tree", 0, json);
