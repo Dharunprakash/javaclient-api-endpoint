@@ -7,6 +7,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 public class JsonParser {
     private static final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
@@ -43,5 +47,16 @@ public class JsonParser {
         } catch (JsonProcessingException e) {
             throw new ApiException("Failed to read JSON tree", 0, json);
         }
+    }
+    public <T> List<T> parseJsonArray(JsonNode dataNode, Class<T> clazz) {
+        return StreamSupport.stream(dataNode.spliterator(), false)
+                .map(node -> {
+                    try {
+                        return JsonParser.parse(node.toString(), clazz);
+                    } catch (ApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .collect(Collectors.toList());
     }
 }

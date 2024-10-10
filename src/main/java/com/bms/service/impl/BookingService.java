@@ -3,57 +3,47 @@ package com.bms.service.impl;
 import com.bms.dto.BookingDTO;
 import com.bms.exception.ApiException;
 import com.bms.http.ApiClient;
-import com.bms.http.HttpResponseData;
 import com.bms.model.Booking;
+import com.bms.utils.ApiRequestUtil;
 import com.bms.utils.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BookingService {
-    private final ApiClient apiClient;
+    private final ApiRequestUtil apiRequestUtil;
+    private final JsonParser jsonParser;
 
     public BookingService(ApiClient apiClient) {
-        this.apiClient = apiClient;
+        this.apiRequestUtil = new ApiRequestUtil(apiClient);
+        this.jsonParser = new JsonParser();
     }
 
     public List<BookingDTO> getAllBookings() throws ApiException {
         String path = "/bookings";
-        HttpResponseData response = apiClient.sendGetRequest(path, null);
-        JsonNode rootNode = JsonParser.readTree(response.getBody());
-        JsonNode dataNode = rootNode.get("data");
-
-        List<BookingDTO> bookings = new ArrayList<>();
-        for (JsonNode node : dataNode) {
-            bookings.add(JsonParser.parse(node.toString(), BookingDTO.class));
-        }
-        return bookings;
+        JsonNode dataNode = apiRequestUtil.sendAndParseRequest(path, "GET", null, JsonNode.class);
+        return jsonParser.parseJsonArray(dataNode, BookingDTO.class);
     }
 
     public Booking getBookingById(Long id) throws ApiException {
         String path = "/bookings/" + id;
-        HttpResponseData response = apiClient.sendGetRequest(path, null);
-        JsonNode rootNode = JsonParser.readTree(response.getBody());
-        JsonNode dataNode = rootNode.get("data");
-        return JsonParser.parse(dataNode.toString(), Booking.class);
+        return apiRequestUtil.sendAndParseRequest(path, "GET", null, Booking.class);
     }
 
     public BookingDTO createBooking(BookingDTO booking) throws ApiException {
         String path = "/bookings";
         String jsonBody = JsonParser.toJson(booking);
-        HttpResponseData response = apiClient.sendPostRequest(path, jsonBody, null);
-        JsonNode rootNode = JsonParser.readTree(response.getBody());
-        JsonNode dataNode = rootNode.get("data");
-        return JsonParser.parse(dataNode.toString(), BookingDTO.class);
+        return apiRequestUtil.sendAndParseRequest(path, "POST", jsonBody, BookingDTO.class);
     }
 
     public Booking updateBooking(Long id, Booking booking) throws ApiException {
         String path = "/bookings/" + id;
         String jsonBody = JsonParser.toJson(booking);
-        HttpResponseData response = apiClient.sendPutRequest(path, jsonBody, null);
-        JsonNode rootNode = JsonParser.readTree(response.getBody());
-        JsonNode dataNode = rootNode.get("data");
-        return JsonParser.parse(dataNode.toString(), Booking.class);
+        return apiRequestUtil.sendAndParseRequest(path, "PUT", jsonBody, Booking.class);
+    }
+
+    public void deleteBooking(Long id) throws ApiException {
+        String path = "/bookings/" + id;
+        apiRequestUtil.sendAndParseRequest(path, "DELETE", null, Void.class);
     }
 }

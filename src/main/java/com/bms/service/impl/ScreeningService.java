@@ -3,31 +3,24 @@ package com.bms.service.impl;
 import com.bms.dto.ScreeningDTO;
 import com.bms.exception.ApiException;
 import com.bms.http.ApiClient;
-import com.bms.http.HttpResponseData;
+import com.bms.utils.ApiRequestUtil;
 import com.bms.utils.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ScreeningService {
-    private final ApiClient apiClient;
+    private final ApiRequestUtil apiRequestUtil;
+    private final JsonParser jsonParser;
 
     public ScreeningService(ApiClient apiClient) {
-        this.apiClient = apiClient;
+        this.apiRequestUtil = new ApiRequestUtil(apiClient);
+        this.jsonParser = new JsonParser();
     }
 
     public List<ScreeningDTO> getScreeningsByMovieId(Long movieId) throws ApiException {
         String path = "/movies/" + movieId + "/screenings";
-        HttpResponseData response = apiClient.sendGetRequest(path, null);
-        JsonNode rootNode = JsonParser.readTree(response.getBody());
-        JsonNode dataNode = rootNode.get("data");
-        System.out.println(dataNode);
-        List<ScreeningDTO> screenings = new ArrayList<>();
-        for (JsonNode node : dataNode) {
-            ScreeningDTO screening = JsonParser.parse(node.toString(), ScreeningDTO.class);
-            screenings.add(screening);
-        }
-        return screenings;
+        JsonNode dataNode = apiRequestUtil.sendAndParseRequest(path, "GET", null, JsonNode.class);
+        return jsonParser.parseJsonArray(dataNode, ScreeningDTO.class);
     }
 }
