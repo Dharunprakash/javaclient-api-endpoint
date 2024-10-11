@@ -18,50 +18,31 @@ public class ApiClient {
         this.httpRequestBuilder = new HttpRequestBuilder(baseUrl);
     }
 
+    public HttpResponseData sendRequest(String path, String method, String jsonBody, Map<String, String> headers) throws ApiException {
+        try {
+            HttpRequest request = httpRequestBuilder.buildRequest(path, method, jsonBody, headers);
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            return handleResponse(response);
+        } catch (Exception e) {
+            throw new ApiException(method + " request failed: " + e.getMessage(), 0, null);
+        }
+    }
 
     public HttpResponseData sendGetRequest(String path, Map<String, String> headers) throws ApiException {
-        try {
-            HttpRequest request = httpRequestBuilder.buildRequest(path, "GET", null, headers);
-            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            return handleResponse(response);
-        } catch (Exception e) {
-            throw new ApiException("GET request failed: " + e.getMessage(), 0, null);
-        }
+        return sendRequest(path, "GET", null, headers);
     }
-
 
     public HttpResponseData sendPostRequest(String path, String jsonBody, Map<String, String> headers) throws ApiException {
-        try {
-            HttpRequest request = httpRequestBuilder.buildRequest(path, "POST", jsonBody, headers);
-            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            return handleResponse(response);
-        } catch (Exception e) {
-            throw new ApiException("POST request failed: " + e.getMessage(), 0, null);
-        }
+        return sendRequest(path, "POST", jsonBody, headers);
     }
-
 
     public HttpResponseData sendPutRequest(String path, String jsonBody, Map<String, String> headers) throws ApiException {
-        try {
-            HttpRequest request = httpRequestBuilder.buildRequest(path, "PUT", jsonBody, headers);
-            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            return handleResponse(response);
-        } catch (Exception e) {
-            throw new ApiException("PUT request failed: " + e.getMessage(), 0, null);
-        }
+        return sendRequest(path, "PUT", jsonBody, headers);
     }
-
 
     public HttpResponseData sendDeleteRequest(String path, Map<String, String> headers) throws ApiException {
-        try {
-            HttpRequest request = httpRequestBuilder.buildRequest(path, "DELETE", null, headers);
-            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            return handleResponse(response);
-        } catch (Exception e) {
-            throw new ApiException("DELETE request failed: " + e.getMessage(), 0, null);
-        }
+        return sendRequest(path, "DELETE", null, headers);
     }
-
 
     private HttpResponseData handleResponse(HttpResponse<String> response) throws ApiException {
         if (response.statusCode() >= 200 && response.statusCode() < 300) {
