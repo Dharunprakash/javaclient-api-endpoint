@@ -1,4 +1,4 @@
-package com.bms.service.impl;
+package com.bms.client;
 
 import com.bms.dto.SeatDTO;
 import com.bms.exception.ApiException;
@@ -10,11 +10,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.List;
 
-public class SeatService {
+public class SeatClient {
     private final ApiRequestUtil apiRequestUtil;
     private final JsonParser jsonParser;
 
-    public SeatService(ApiClient apiClient) {
+    public SeatClient(ApiClient apiClient) {
         this.apiRequestUtil = new ApiRequestUtil(apiClient);
         this.jsonParser = new JsonParser();
     }

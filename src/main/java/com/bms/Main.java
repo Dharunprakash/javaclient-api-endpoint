@@ -3,7 +3,7 @@ package com.bms;
 import com.bms.dto.*;
 import com.bms.http.ApiClient;
 import com.bms.http.ApiClientInstance;
-import com.bms.service.impl.*;
+import com.bms.client.*;
 
 import java.util.List;
 

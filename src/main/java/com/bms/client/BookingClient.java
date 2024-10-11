@@ -1,4 +1,4 @@
-package com.bms.service.impl;
+package com.bms.client;
 
 import com.bms.dto.BookingDTO;
 import com.bms.exception.ApiException;
@@ -10,11 +10,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.List;
 
-public class BookingService {
+public class BookingClient {
     private final ApiRequestUtil apiRequestUtil;
     private final JsonParser jsonParser;
 
-    public BookingService(ApiClient apiClient) {
+    public BookingClient(ApiClient apiClient) {
         this.apiRequestUtil = new ApiRequestUtil(apiClient);
         this.jsonParser = new JsonParser();
     }

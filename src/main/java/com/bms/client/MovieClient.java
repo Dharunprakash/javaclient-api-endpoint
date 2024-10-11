@@ -1,4 +1,4 @@
-package com.bms.service.impl;
+package com.bms.client;
 
 import com.bms.dto.MovieDTO;
 import com.bms.exception.ApiException;
@@ -10,11 +10,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.List;
 
-public class MovieService {
+public class MovieClient {
     private final ApiRequestUtil apiRequestUtil;
     private final JsonParser jsonParser;
 
-    public MovieService(ApiClient apiClient) {
+    public MovieClient(ApiClient apiClient) {
         this.apiRequestUtil = new ApiRequestUtil(apiClient);
         this.jsonParser = new JsonParser();
     }

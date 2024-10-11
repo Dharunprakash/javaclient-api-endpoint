@@ -1,4 +1,4 @@
-package com.bms.service.impl;
+package com.bms.client;
 
 import com.bms.dto.TheatreDTO;
 import com.bms.exception.ApiException;
@@ -10,15 +10,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.List;
 
-public class TheatreService {
+public class TheatreClient {
     private final ApiRequestUtil apiRequestUtil;
     private final JsonParser jsonParser;
 
-    public TheatreService(ApiClient apiClient) {
+    public TheatreClient(ApiClient apiClient) {
         this.apiRequestUtil = new ApiRequestUtil(apiClient);
         this.jsonParser = new JsonParser();
     }
-
 
     public List<TheatreDTO> getAllTheatres() throws ApiException {
         String path = "/theatres";
